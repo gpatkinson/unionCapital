@@ -9,7 +9,8 @@
       "roles": {},
       "autoform": {},
       "collection2": {},
-      "moment": {}
+      "moment": {},
+      "packmeteor": {}
     },
     "packages": {
       "bootstrap-3": {
@@ -51,6 +52,11 @@
         "git": "https://github.com/acreeger/meteor-moment.git",
         "tag": "v2.6.0",
         "commit": "26156df681750fd6e6ed77043eef32b6653ebbdf"
+      },
+      "packmeteor": {
+        "git": "https://github.com/SpaceCapsule/packmeteor.git",
+        "tag": "v0.1.0",
+        "commit": "3c82887b695269bb4ba540665ad4544b5e702a3a"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",

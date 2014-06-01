@@ -5,7 +5,7 @@ Transactions = new Meteor.Collection('transactions', {
                label: 'User Identifier',
                optional: true
              },
-     eventID: {
+     eventId: {
                type: String,
                label: 'ID of related Event'
                }
@@ -13,8 +13,9 @@ Transactions = new Meteor.Collection('transactions', {
 });
 
 Transactions.allow({
-  insert: function() {
-            return true;
+  insert: function(userId, transaction) {
+            // FIXME this is a validation, this probably shouldn't be part of the authorization
+            return Transactions.find({userId: transaction.userId, eventId: transaction.eventId}).count() === 0;
           },
   update: function() {
             return true;

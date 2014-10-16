@@ -18,13 +18,11 @@ function removeImages(type) {
       addErrorMessage(error.reason);
     }
     $('#userInput').val('');
-    Session.set('imageLoaded', false);
+    Session.set('imageId', "");
   });
 }
 
 Template.takePicture.rendered = function() {
-  Session.set('imageLoaded', false);
-  Session.set('imageId', null);
   Session.set('eventName', null);
   Session.set('timeEntered', false);
   var currentDate = moment().format("YYYY-MM-DD");
@@ -60,8 +58,7 @@ Template.takePicture.events({
       if(error) {
         addErrorMessage(error.reason);
       } else {
-
-        var imageId = Images.insert(newFile, function(error, fileObj) {
+        var imageId = Images.insert(data, function(error, fileObj) {
           if(error) {
             addErrorMessage(error.reason);
           }
@@ -118,7 +115,7 @@ Template.takePicture.events({
 
 Template.takePicture.helpers({
   imageLoaded: function() {
-    return Session.get('imageLoaded');
+    return Session.get('imageId');
   },
   formComplete: function() {
     if(Session.get('imageId') && Session.get('eventName') &&

@@ -18,13 +18,9 @@
           Remove Photo
         </button>
       {{else}}
-        <span class="input-group-btn">
-          <span class="btn btn-block btn-default btn-file">
-            Take Photo
-            <input  id="userInput" 
-            type="file" accept="image/*" capture="camera">
-          </span>
-        </span>
+        <button type="button" class="btn btn-default btn-block" id="takePicture">
+          Take Photo
+        </button>
       {{/if}}
       {{#if formComplete}}
         <button type="button" class="btn btn-success btn-block" id="submitEvent">

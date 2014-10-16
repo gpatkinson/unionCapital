@@ -1,24 +1,5 @@
-//TODO: this code sucks, please clean it up
-var photoType = "userEvent";
-var files;
-
-function insertFiles(files, e, type) {
-    FS.Utility.eachFile(e, function(file) {
-      var newFile = new FS.File(file);
-      var currentDate = new Date();
-      newFile.metadata = {
-        userId: Meteor.userId(),
-        type: type,
-        submissionTime: currentDate
-      };
-      var imageId = Images.insert(newFile, function(error, fileObj) {
-        if(error) {
-          addErrorMessage(error.reason);
-        }
-      })._id;
-      Session.set('imageId', imageId);
-    });
-}
+var photoType = 'userEvent';
+Session.setDefault('imageId', "");
 
 function removeImages(type) {
   //TODO: note that Minimongo doesn't yet support findAndModify, so 
@@ -66,17 +47,30 @@ Template.takePicture.events({
     e.preventDefault();
     Session.set('timeEntered', true);
   },
-  'change #userInput': function(e) {
+  'click #takePicture': function(e) {
     e.preventDefault(); 
 
-    files = e.target.files; 
-    //TODO: get Jquery preview working
-    //$('#eventImage').attr('src', e.target.value).width(400).height(400); 
+    var cameraOptions = {
+      width: 800,
+      height: 600,
+      quality: 50
+    };
 
-    $('#fileName').attr("placeholder", e.target.files[0].name);
-    Session.set('imageLoaded', true);
+    MeteorCamera.getPicture(cameraOptions, function(error, data) {
+      if(error) {
+        addErrorMessage(error.reason);
+      } else {
 
-    insertFiles(files, e, photoType);
+        var imageId = Images.insert(newFile, function(error, fileObj) {
+          if(error) {
+            addErrorMessage(error.reason);
+          }
+        })._id;
+
+        Session.set('imageId', imageId);
+      }
+    });
+
   },
   'click #removeUserInput': function(e) {
     e.preventDefault();
@@ -123,11 +117,6 @@ Template.takePicture.events({
 });
 
 Template.takePicture.helpers({
-  images: function(type) {
-    return Images.find({"metadata.type": type, 
-      "metadata.userId": Meteor.userId()}, 
-      {sort: {updatedAt: -1}, limit: 1});
-  },
   imageLoaded: function() {
     return Session.get('imageLoaded');
   },

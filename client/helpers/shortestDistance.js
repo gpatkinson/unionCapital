@@ -9,8 +9,8 @@ closestLocation = function(userLocation, events) {
     return Math.sqrt(dx * dx + dy * dy);
   }
   function locationDistance(loc1, loc2) {
-    var dx = loc1.latitude - loc2.latitude,
-    dy = loc1.longitude - loc2.longitude;
+    var dx = loc1.lat - loc2.lat,
+    dy = loc1.lng - loc2.lng;
 
     return vectorDistance(dx, dy);
   }
@@ -23,7 +23,7 @@ closestLocation = function(userLocation, events) {
     return (prevDistance < currentDistance) ? prev : current;
   });
 
-  var distance = haversineFormula(shortestDistanceEvent, userLocation.longitude, userLocation.latitude);
+  var distance = haversineFormula(shortestDistanceEvent, userLocation.lng, userLocation.lat);
 
   return {
     event: shortestDistanceEvent,

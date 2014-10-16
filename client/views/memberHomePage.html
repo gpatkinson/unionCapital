@@ -6,11 +6,17 @@
       </small>
     </h1>
     <div class="col-md-6 col-md-offset-3">
-      <img src="images/UCBbutton.png" alt="Check Into Event" id="quickCheckIn" height="200" width="200">
-      <br>
-      <em>Quick Check In</em>
-      <br>
-      <br>
+      {{#if geolocationReady}}
+      <img src="images/UCBbutton.png" alt="Check Into Event" 
+        id="quickCheckIn" height="200" width="200">
+        <br>
+        <em>Quick Check In</em>
+        <br>
+        <br>
+      {{/if}}
+      {{#if geolocationError}}
+        Sorry, there was an error with geolocation. Please use below photo
+      {{/if}}
       <img src="images/UCBphoto.png" alt="Check Into Event" id="takePhoto" height="200" width="275">
       <br>
       <em>New Event</em>

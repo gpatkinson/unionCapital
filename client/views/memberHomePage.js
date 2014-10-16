@@ -16,12 +16,19 @@ Template.memberHomePage.helpers({
     if(Meteor.user()) {
       return Meteor.user().profile.firstName || "";
     }
+  },
+  'geolocationReady': function() {
+    return Geolocation.latLng();
+  },
+  'geolocationError': function() {
+    return Geolocation.error();
   }
 });
 Template.memberHomePage.events({
   'click #quickCheckIn': function(e) {
     e.preventDefault();
-    Router.go('quickCheckIn');
+    Router.go('quickCheckIn', { lat: Geolocation.latLng().lat,
+              lng: Geolocation.latLng().lng});
   },
   'click #takePhoto': function(e) {
     e.preventDefault();

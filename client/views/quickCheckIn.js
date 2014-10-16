@@ -1,40 +1,18 @@
+Session.setDefault('closestEvent', null);
+Session.setDefault('timeEntered', false);
+
 Template.quickCheckIn.rendered = function() {
-  Session.set('closestEvent', null);
-  Session.set('timeEntered', false);
+  var closestEvent = closestLocation(this.data, 
+                                     Events.find({active: 1}).fetch());
   
-  var geoOptions = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0
-  };
-
-  if(navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-
-      var userLocation = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude          
-      };
-
-      var closestEvent = closestLocation(userLocation, 
-                                         Events.find({active: 1}).fetch());
-      
-                                   
-      //TODO: magic number below, will be set eventually in admin 
-      //dashboard
-      if(closestEvent.distance < 0.1)  {
-        Session.set('closestEvent',closestEvent.event);
-      } else {
-        addErrorMessage('The closest event is further than 100 meters away. Please' +
-                        ' move closer or Submit a Photo');
-        Router.go('memberHomePage');
-      }
-    }, function(error) {
-      addErrorMessage(error.message);
-    }, geoOptions);
+  //TODO: magic number below, will be set eventually in admin 
+  //dashboard
+  if(closestEvent.distance < 0.1)  {
+    Session.set('closestEvent',closestEvent.event);
   } else {
-    addErrorMessage('Geolocation not supported, please check in with photo');
-    Router.go('takePicture');
+    addErrorMessage('The closest event is further than 100 meters away. Please' +
+                    ' move closer or Submit a Photo');
+    Router.go('memberHomePage');
   }
 };
 
@@ -65,10 +43,9 @@ Template.quickCheckIn.events({
       hoursSpent: parseInt($('#hours').val(),10) || 0,
       minutesSpent: parseInt($('#minutes').val(),10) || 0
     };
-    //if you are a points per hour event than the user
+    //if it is a points per hour event than the user
     //has to enter points
-    if(!Session.get('closestEvent').isPointsPerHour || 
-       Session.get('timeEntered')) {
+    if(!Session.get('closestEvent').isPointsPerHour || Session.get('timeEntered')) {
       
       Meteor.call('insertTransaction', attributes, function(error) {
         if(error) {

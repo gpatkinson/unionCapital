@@ -1,59 +1,75 @@
 <template name="layout">
-  <div class="container-real main row">
-    <nav role="navigation" class="nav">
-      {{#if currentUser}}
-        <div id="login-button">
-        <a href="{{pathFor 'landing'}}" id="signOut">Sign Out</a>
-        </div>
-      {{/if}}
+  <!-- figure out how to fix navigation to top -->
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <div class="col-xs-6 col-xs-offset-3">
        {{#if isInRole 'admin'}}
           <a href="{{pathFor 'adminHomePage'}}"> 
-            <img class="UCB-nav-logo" border="0" src="images/UCB-Logo-Acronym.jpg" alt="UCB Logo"  height="40">
+            <img class="img-responsive" src="images/UCB-Logo-Acronym.jpg" alt="UCB Logo">
           </a>
         {{else}}
           {{#if isInRole 'user'}}
           <a href="{{pathFor 'memberHomePage'}}"> 
-            <img class="UCB-nav-logo" border="0" src="images/UCB-Logo-Acronym.jpg" alt="UCB Logo"  height="40">
+            <img class="img-responsive" src="images/UCB-Logo-Acronym.jpg" alt="UCB Logo">
           </a>
           {{else}}
-            <img class="UCB-nav-logo" border="0" src="images/ucb-logo-lg.jpg" alt="UCB Logo"  height="40">
+            <img class="img-responsive" src="images/ucb-logo-lg.jpg" alt="UCB Logo">
           {{/if}}
         {{/if}}
-      </div>
-      <span>
-        {{#if isInRole 'admin'}}
-          <ul class="nav navbar-nav nav nav-pills">
-          <li><a href="{{pathFor 'memberProfiles'}}">Member Profiles</a></li>
-          <li><a href="{{pathFor 'reviewPhotos'}}">Approve Points</a></li>
-          <li><a href="{{pathFor  'addCommunityEvents'}}">Manage Events</a></li>
-          </ul>
-        {{else}}
-          {{#if isInRole 'user'}}
-          <ul class="nav navbar-nav nav nav-pills">
-            <li><a href="{{pathFor 'currentEvents'}}">Events</a></li>
-            {{#with currentUser}}
-              <li><a href="{{pathFor 'checkPoints'}}">Points</a></li>
-            {{/with}}
-            <li><a href="{{pathFor 'contactUs'}}">Contact</a></li>
-          </ul>
-          {{/if}}
-        {{/if}}
-      </span>
-      </nav>
-      <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-          {{> alerts}}
         </div>
       </div>
-      <div id="main-content-container">
+
+      <!-- Collect the links and sign out button for toggling -->
+      <div class="collapse navbar-collapse" id="navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          {{#if isInRole 'admin'}}
+            <li><a href="{{pathFor 'memberProfiles'}}">Member Profiles</a></li>
+            <li><a href="{{pathFor 'reviewPhotos'}}">Approve Points</a></li>
+            <li><a href="{{pathFor  'addCommunityEvents'}}">Manage Events</a></li>
+          {{else}}
+            {{#if isInRole 'user'}}
+              <li><a href="{{pathFor 'currentEvents'}}">Events</a></li>
+              {{#with currentUser}}
+                <li><a href="{{pathFor 'checkPoints'}}">Points</a></li>
+              {{/with}}
+              <li><a href="{{pathFor 'contactUs'}}">Contact</a></li>
+            {{/if}}
+          {{/if}}
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          {{#if currentUser}}
+            <li><a href="{{pathFor 'landing'}}" id="signOut">Sign Out</a></li>
+          {{/if}}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-8 col-cs-offset-2">
+        {{> alerts}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-10 col-xs-offset-1">
         {{> yield}}
       </div>
-      <div class="boston-photo">
-        <p>Union Capital Boston: <a href="http://unioncapitalboston.com/"> www.unioncapitalboston.com </a></p> 
-        <a href="https://www.flickr.com/photos/ensh/4769294947">
-          <p>Photo by Emmanuel Huybrechts</p>
-        </a>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-xs-12">
+        <img class="img-responsive" alt="Image of Boston" 
+          src="images/Boston-a-lheure-bleue-by-Emmanuel-Huybrechts.jpg">
+          <!-- TODO: put source of photo back in -->
       </div>
+    </div>
   </div>
 </template>
